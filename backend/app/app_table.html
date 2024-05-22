@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables</title>    
+    <link rel="stylesheet" href="w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+</head>
+<body class="w3-container">
+    <div class="w3-bar w3-white w3-margin-top">
+        <form class="w3-container w3-bar" id="command">
+            <input class="w3-input w3-border w3-round w3-bar-item" type="text" name="command"/>
+            <button class="w3-btn w3-green  w3-bar-item" type="submit">Submit</button>
+        </form>    
+    </div>
+    <div class="w3-card w3-padding w3-margin-top">
+        <h2>Tables</h2>
+        <ul class="w3-ul  w3-border" id="table_names">
+            <li class="w3-large w3-pale-green"><b>{{db_name}}.db</b></li>
+            <li w3-repeat="files"><a href="./app_fields.html?database={{db_name}}&table={{name}}">{{name}}</a></li>
+        </ul>
+    </div>
+
+
+    <script>
+        let cross_origin_properties = {    
+            method: 'GET',    
+            withCredentials: true,    
+            crossorigin: true,    
+            mode: 'cors',       
+        };
+        let url_prefix = "http://103.211.202.111/backend/main.py?";
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const database_name = urlParams.get('database').split(".")[0];
+        fetch(url_prefix+"username=admin&password=12345&func=read_database_table_names&db_name="+database_name,cross_origin_properties)
+        .then(data => data.json())
+        .then(json => {
+            w3.displayObject("table_names",json);
+        });
+        
+        document.querySelector('#command')
+        .addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            let command = event.target.querySelector("[name]").value;
+            fetch(url_prefix+"username=admin&password=12345&func=execute_command&db_name="+database_name+"&command="+command,cross_origin_properties)
+            .then(data => data.json())
+            .then(json =>{
+                alert(json["status"])
+                window.location.reload();
+                }
+            );
+        });
+        // console.log(queryString,database_name);
+    </script>
+</body>
+</html>

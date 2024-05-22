@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fields</title>
+    <link rel="stylesheet" href="w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+</head>
+<body class="w3-container">
+    <div class="w3-bar w3-white w3-margin-top">
+        <form class="w3-container w3-bar" id="command">
+            <input class="w3-input w3-border w3-round w3-bar-item" type="text" name="command"/>
+            <button class="w3-btn w3-green  w3-bar-item" type="submit">Submit</button>
+        </form>    
+    </div>
+    <h1 id="header">Database: {{database_name}}.db and Table: {{table_name}}</h1>
+    
+    <div class="w3-card w3-padding w3-margin-top">
+        <h2>Fields</h2>
+        <table class="w3-table  w3-border" id="field_names">
+            <tr>
+                <th w3-repeat="column_names">{{name}}</th>
+            </tr>
+            <!-- <li w3-repeat="files"><a href="./app_fields.html?database={{db_name}}&table={{name}}">{{name}}</a></li> -->
+        </ul>
+    </div>
+    
+
+    <script>
+                let cross_origin_properties = {    
+            method: 'GET',    
+            withCredentials: true,    
+            crossorigin: true,    
+            mode: 'cors',       
+        };
+        let url_prefix = "http://103.211.202.111/backend/main.py?";
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const database_name = urlParams.get('database');
+        const table_name = urlParams.get('table');
+        w3.displayObject("header",{"database_name":database_name,"table_name":table_name});
+        console.log(database_name,table_name);
+        fetch(url_prefix+"username=admin&password=12345&func=read_database_table_field_names&db_name="+database_name+"&table_name="+table_name,cross_origin_properties)
+        .then(data => data.json())
+        .then(json => {
+            w3.displayObject("field_names",json);
+            let temp = document.querySelector("#field_names");
+            let temp_1 = json["values"];
+            for(let i=0 ; i<temp_1.length ; i++){
+                let temp_tr = document.createElement("tr");
+                for(let j=0 ; j<temp_1[i].length ; j++){
+                    let temp_td = document.createElement("td");
+                    temp_td.append(temp_1[i][j]);
+                    temp_tr.append(temp_td);
+                }
+                temp.append(temp_tr);
+            }
+        });
+
+        document.querySelector('#command')
+        .addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            let command = event.target.querySelector("[name]").value;
+            fetch(url_prefix+"username=admin&password=12345&func=execute_command_on_table&db_name="+database_name+"&table_name="+table_name+"&command="+command,cross_origin_properties)
+            .then(data => data.json())
+            .then(json =>{
+                // console.log(json);
+                alert(json["status"])
+                window.location.reload();
+                }
+            );
+        });
+        
+    </script>
+</body>
+</html>
