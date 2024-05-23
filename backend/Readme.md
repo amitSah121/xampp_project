@@ -136,8 +136,15 @@ e.g. http://103.211.202.111/backend/main.py/username=Hello&&password=12345&&func
 4) read_database_table_names
  e.g. username=admin&password=12345&func=read_database_table_names&db_name=test
 5) execute_command
-  e.g. username=admin&password=12345&func=execute_command&db_name="+database_name+"&command="+command
+  e.g. username=admin&password=12345&func=execute_command&db_name=database_name&command=command
 6) execute_command_on_table
-  e.g. username=admin&password=12345&func=execute_command_on_table&db_name="+database_name+"&table_name="+table_name+"&command="+command
+  e.g. username=admin&password=12345&func=execute_command_on_table&db_name=database_name&table_name=table_name&command=command
 7) read_database_table_field_names
-  e.g. username=admin&password=12345&func=read_database_table_field_names&db_name="+database_name+"&table_name="+table_name
+  e.g. username=admin&password=12345&func=read_database_table_field_names&db_name=database_name&table_name=table_name
+
+#### References 
+1) https://www.sitepoint.com/get-url-parameters-with-javascript/
+2) https://www.w3schools.com/w3css/w3css_tables.asp
+3) https://www.w3schools.com/w3js/w3js_hide.asp
+4) https://docs.python.org/3/library/sqlite3.html
+5) https://robosparrow.github.io/2020/09/29/python-cgi-parsing-json-requests.html
