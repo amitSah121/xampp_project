@@ -192,4 +192,4 @@ after executing read_databases again, removes pebble.db
 }
 ```
 
-
+Lastly , https://www.url-encode-decode.com/ website can be used to convert "select * from table_1" to "select+%2A+from+table_1"
