@@ -18,6 +18,7 @@ This api endpoint backend is based on python running on cgi on xampp server at h
 App Interface
 -------
 1) The main application can be called from http://103.211.202.111/backend/app/app.html . 
+2) The login screen appears, note: default username=guest, password=guest. For admin purpose only usernamep=admin.Login.
 2) app.html presents interface to create , delete and view databases
 3) after creating and going inside a database say "Test.db", you will be presented with a url http://103.211.202.111/backend/app/app_table.html?database=Test.db
     1) The interface presented gives flexibility in creating, updating and deleting tables with the use of executing command.
@@ -191,5 +192,12 @@ after executing read_databases again, removes pebble.db
   "status": "[(2, 3), (5, 6)]"
 }
 ```
+ 7) To create new user
+  - func = create_register
+  - optional_parameter
+    - username
+    - password
+  - http://103.211.202.111/backend/main.py?username=admin&password=12345
+  - e.g. http://103.211.202.111/backend/app/app_database.html?username=guest&password=guest
 
 Lastly , https://www.url-encode-decode.com/ website can be used to convert "select * from table_1" to "select+%2A+from+table_1"

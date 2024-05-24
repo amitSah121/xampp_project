@@ -8,6 +8,8 @@ from funcs import read_database_table_names
 from funcs import execute_command
 from funcs import execute_command_on_table
 from funcs import read_database_table_field_names
+from funcs import check_login
+from funcs import create_register
 # import json
 # import sqlite3
 
@@ -22,14 +24,12 @@ print("Content-Type: application/json; charset=UTF-8\n\n")
 
 if __name__ == "__main__":
     data = cgi.FieldStorage()
-    username = data.getfirst("username")
-    password = data.getfirst("password")
     function_to_use = data.getfirst("func")
-    if not (username == "admin" and password == "12345"):
-        print('"err":"incorrect username or password"')
+    # if not (username == "admin" and password == "12345"):
+    #     print('"err":"incorrect username or password"')
     
     if function_to_use == "read_database_names":
-        print(read_database_names())
+        print(read_database_names(data))
     elif function_to_use == "create_database":
         print(create_database(data)) 
     elif function_to_use == "delete_database":
@@ -42,6 +42,10 @@ if __name__ == "__main__":
         print(execute_command_on_table(data))
     elif function_to_use == "read_database_table_field_names":
         print(read_database_table_field_names(data))
+    elif function_to_use == "check_login" :
+        print(check_login(data))
+    elif function_to_use == "create_register":
+        print(create_register(data))
     
     # make = data.getvalue("make")
     # p = {'fello':'hello','hello':10}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <link rel="stylesheet" href="w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+</head>
+<body class="w3-container">
+    <button class="w3-button w3-amber" onclick="go_back()">Back</button>
+    <div id="model" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container w3-padding">
+            <span onclick="w3.hide('#model')"
+            class="w3-button w3-display-topright">&times;</span>
+            <form>
+                <p>Enter Name:</p>
+                <input name="name" type="text"/>
+                <button type="submit" class="w3-button">Okay</button>
+            </form>
+          </div>
+        </div>
+    </div>
+
+    <div id="model_delete" class="w3-modal">
+        <div class="w3-modal-content">
+          <div class="w3-container w3-padding">
+            <span onclick="w3.hide('#model_delete')"
+            class="w3-button w3-display-topright">&times;</span>
+            <form>
+                <p>Enter Name:</p>
+                <input name="name" type="text"/>
+                <button type="submit" class="w3-button">Okay</button>
+            </form>
+          </div>
+        </div>
+    </div>
+    <div class="w3-bar w3-white w3-margin-top">
+        <a onclick="w3.show('#model')" class="w3-bar-item w3-green w3-button">New Database</a> 
+        <a class="w3-button w3-red w3-bar-item" onclick="w3.show('#model_delete')">Delete</a>
+    </div>
+    <div class="w3-card w3-padding w3-margin-top">
+        <h2>Databases</h2>
+        <ul class="w3-ul  w3-border" id="database_names">
+            <li w3-repeat="files"><a href="./app_table.html?username={{username}}&password={{password}}&database={{name}}">{{name}}</a></li>
+        </ul>
+    </div>
+
+    <script>
+        let cross_origin_properties = {    
+            method: 'GET',    
+            withCredentials: true,    
+            crossorigin: true,    
+            mode: 'cors',       
+        };
+        let url_prefix = "http://103.211.202.111/backend/main.py?";
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const username = urlParams.get('username');
+        const password = urlParams.get('password');
+        fetch(url_prefix+"username="+username+"&password="+password+"&func=read_database_names",cross_origin_properties)
+        .then(data => data.json())
+        .then(json => w3.displayObject("database_names",json));
+
+        document.querySelector('#model')
+        .addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            let name = event.target.querySelector("[name]").value;
+            if(name.split(".")[1] != "db"){
+                fetch(url_prefix+"username="+username+"&password="+password+"&func=create_database&db_name="+name,cross_origin_properties)
+                .then(data => data.json())
+                .then(json =>{
+                    alert(json["status"])
+                    window.location.reload();
+                    }
+                );
+            }
+        });
+
+        document.querySelector('#model_delete')
+        .addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            let name = event.target.querySelector("[name]").value;
+            if(name.split(".")[1] != "db"){
+                fetch(url_prefix+"username="+username+"&password="+password+"&func=delete_database&db_name="+name,cross_origin_properties)
+                .then(data => data.json())
+                .then(json =>{
+                    alert(json["status"])
+                    window.location.reload();
+                    }
+                );
+            }
+        });
+        let go_back = function(){
+            window.location.href = "./app.html";
+        }
+       
+    </script>
+</body>
+</html>

@@ -8,6 +8,7 @@
     <script src="https://www.w3schools.com/lib/w3.js"></script>
 </head>
 <body class="w3-container">
+    <button class="w3-button w3-amber" onclick="go_back()">Back</button>
     <div class="w3-bar w3-white w3-margin-top">
         <form class="w3-container w3-bar" id="command">
             <input class="w3-input w3-border w3-round w3-bar-item" type="text" name="command"/>
@@ -37,11 +38,13 @@
         let url_prefix = "http://103.211.202.111/backend/main.py?";
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
+        const username = urlParams.get('username');
+        const password = urlParams.get('password');
         const database_name = urlParams.get('database');
         const table_name = urlParams.get('table');
         w3.displayObject("header",{"database_name":database_name,"table_name":table_name});
         console.log(database_name,table_name);
-        fetch(url_prefix+"username=admin&password=12345&func=read_database_table_field_names&db_name="+database_name+"&table_name="+table_name,cross_origin_properties)
+        fetch(url_prefix+"username="+username+"&password="+password+"&func=read_database_table_field_names&db_name="+database_name+"&table_name="+table_name,cross_origin_properties)
         .then(data => data.json())
         .then(json => {
             w3.displayObject("field_names",json);
@@ -62,7 +65,7 @@
         .addEventListener('submit', (event) => {
             event.preventDefault(); 
             let command = event.target.querySelector("[name]").value;
-            fetch(url_prefix+"username=admin&password=12345&func=execute_command_on_table&db_name="+database_name+"&table_name="+table_name+"&command="+command,cross_origin_properties)
+            fetch(url_prefix+"username="+username+"&password="+password+"&func=execute_command_on_table&db_name="+database_name+"&table_name="+table_name+"&command="+command,cross_origin_properties)
             .then(data => data.json())
             .then(json =>{
                 // console.log(json);
@@ -71,6 +74,10 @@
                 }
             );
         });
+
+        let go_back = function(){
+            window.location.href = "./app_table.html?username="+username+"&password="+password+"&database="+database_name+".db";
+        }
         
     </script>
 </body>

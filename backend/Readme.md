@@ -141,6 +141,10 @@ e.g. http://103.211.202.111/backend/main.py/username=Hello&&password=12345&&func
   e.g. username=admin&password=12345&func=execute_command_on_table&db_name=database_name&table_name=table_name&command=command
 7) read_database_table_field_names
   e.g. username=admin&password=12345&func=read_database_table_field_names&db_name=database_name&table_name=table_name
+8) create_register
+  e.g. username=admin&password=12345
+9) check_login
+  e.g. username=admin&password=12345
 
 #### References 
 1) https://www.sitepoint.com/get-url-parameters-with-javascript/
