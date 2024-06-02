@@ -145,7 +145,9 @@ def execute_command(data):
                 cursor = con.cursor()
                 cursor.execute(sql_query)
                 p = cursor.fetchall()
-                # temp["status"] = str(p)
+                temp["values"] = str(p)
+                if "select" in command:
+                    temp["column_names"] = list(map(lambda x: {"name":x[0]}, cursor.description))
                 con.commit()
                 temp["status"] = "OK"
             else:
@@ -173,15 +175,18 @@ def execute_command_on_table(data):
     con = None
     temp_1 = check_login_and_return_databases(data)
     temp["db_name"] = db_name
+    temp["command"] = ""
     if db_name != None and table_name != None and table_name in command:
         try:
             if temp_1["status"] == "OK" and temp_1["username"] == username and temp_1["password"] == password:
                 con = sqlite3.connect(db_name+".db")
                 sql_query = command
+                temp["command"] = command
                 cursor = con.cursor()
                 cursor.execute(sql_query)
                 p = cursor.fetchall()
-                # temp["status"] = str(p)
+                temp["values"] = str(p)
+                # temp["column_names"] = list(map(lambda x: {"name":x[0]}, cursor.description))
                 con.commit()
                 temp["status"] = "OK"
             else:
